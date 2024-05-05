@@ -1,5 +1,6 @@
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
+import "dotenv/config";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -17,6 +18,7 @@ const UploadOnCloudinary = async (file) => {
     return response;
   } catch (error) {
     fs.unlinkSync(file);
+    console.log(error);
     return null;
   }
 };

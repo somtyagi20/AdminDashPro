@@ -1,5 +1,5 @@
-import ApiError from "../utils/ApiError.js";
-import asyncHandler from "../utils/asyncHandler.js";
+import ApiError from "../Utils/apiError.js";
+import asyncHandler from "../Utils/asyncHandler.js";
 import JWT from "jsonwebtoken";
 import { Admin } from "../Models/admin.js";
 
@@ -11,7 +11,6 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
   if (!token) {
     throw new ApiError(401, "Unauthorized request");
   }
-
   const decodedToken = JWT.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
   const user = await Admin.findById(decodedToken?._id).select(
