@@ -59,7 +59,7 @@ import {
   updateShippingInfo,
 } from "../Controllers/shippingInfoController.js";
 
-router.route("/createShippingInfo").post(verifyJWT, createShippingInfo);
+router.route("/addShippingInfo").post(verifyJWT, createShippingInfo);
 router.route("/getShippingInfos").get(verifyJWT, getShippingInfos);
 router.route("/getShippingInfo").get(verifyJWT, getShippingInfo);
 router.route("/updateShippingInfo").post(verifyJWT, updateShippingInfo);

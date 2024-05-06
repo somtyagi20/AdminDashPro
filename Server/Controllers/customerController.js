@@ -5,7 +5,7 @@ import { Customer } from "../Models/customer.js";
 
 const createCustomer = asyncHandler(async (req, res, next) => {
   const { name, email, phone, city } = req.body;
-  if ([name, email, phone, address].some((field) => field?.trim() === "")) {
+  if ([name, email, phone, city].some((field) => field?.trim() === "")) {
     throw new ApiError(400, "All fields are required");
   }
 
@@ -16,7 +16,7 @@ const createCustomer = asyncHandler(async (req, res, next) => {
     throw new ApiError(409, "Customer with this email already exist !");
   }
 
-  const customer = await Customer.create({ name, email, phone, address });
+  const customer = await Customer.create({ name, email, phone, city });
 
   if (!customer) {
     throw new ApiError(500, "Failed to create customer");
@@ -41,8 +41,8 @@ const getCustomer = asyncHandler(async (req, res, next) => {
 });
 
 const updateCustomer = asyncHandler(async (req, res, next) => {
-  const { name, email, phone, address } = req.body;
-  if ([name, email, phone, address].some((field) => field?.trim() === "")) {
+  const { name, email, phone, city } = req.body;
+  if ([name, email, phone, city].some((field) => field?.trim() === "")) {
     throw new ApiError(400, "All fields are required");
   }
 
@@ -52,7 +52,7 @@ const updateCustomer = asyncHandler(async (req, res, next) => {
       name,
       email,
       phone,
-      address,
+      city,
     },
     { new: true }
   );
@@ -69,7 +69,7 @@ const deleteCustomer = asyncHandler(async (req, res, next) => {
   if (!customer) {
     throw new ApiError(404, "Customer not found");
   }
-  await customer.remove();
+  await Customer.deleteOne({ _id: customer._id });
   res.status(200).json(new ApiResponse(200, "Customer deleted", null));
 });
 

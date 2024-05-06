@@ -75,7 +75,7 @@ const deleteOrder = asyncHandler(async (req, res, next) => {
   if (!order) {
     throw new ApiError(404, "Order not found");
   }
-  await order.remove();
+  await order.deleteOne({ _id: order._id });
   res.status(200).json(new ApiResponse(200, "Order deleted", null));
 });
 

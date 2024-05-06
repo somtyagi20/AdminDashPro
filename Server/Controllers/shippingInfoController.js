@@ -4,9 +4,9 @@ import asyncHandler from "../Utils/asyncHandler.js";
 import { ShippingInfo } from "../Models/shippingInfo.js";
 
 const createShippingInfo = asyncHandler(async (req, res, next) => {
-  const { order, address, city, state, country, zip } = req.body;
+  const { order, address, city, pincode, customer } = req.body;
   if (
-    [order, address, city, state, country, zip].some(
+    [order, address, city, customer, pincode].some(
       (field) => field?.trim() === ""
     )
   ) {
@@ -17,9 +17,8 @@ const createShippingInfo = asyncHandler(async (req, res, next) => {
     order,
     address,
     city,
-    state,
-    country,
-    zip,
+    customer,
+    pincode,
   });
 
   if (!shippingInfo) {
@@ -49,23 +48,28 @@ const getShippingInfo = asyncHandler(async (req, res, next) => {
 });
 
 const updateShippingInfo = asyncHandler(async (req, res, next) => {
-  const { order, address, city, state, country, zip } = req.body;
+  const { order, address, city, customer, pincode } = req.body;
   if (
-    [order, address, city, state, country, zip].some(
+    [order, address, city, customer, pincode].some(
       (field) => field?.trim() === ""
     )
   ) {
     throw new ApiError(400, "All fields are required");
   }
 
-  const shippingInfo = await ShippingInfo.findByIdAndUpdate(req.query.id, {
-    order,
-    address,
-    city,
-    state,
-    country,
-    zip,
-  });
+  const shippingInfo = await ShippingInfo.findByIdAndUpdate(
+    req.query.id,
+    {
+      order,
+      address,
+      city,
+      customer,
+      pincode,
+    },
+    {
+      new: true,
+    }
+  );
 
   if (!shippingInfo) {
     throw new ApiError(500, "Failed to update shipping info");
